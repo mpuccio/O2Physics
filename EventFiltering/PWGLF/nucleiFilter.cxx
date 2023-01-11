@@ -10,7 +10,6 @@
 // or submit itself to any jurisdiction.
 // O2 includes
 
-
 #include <cmath>
 #include <string>
 
