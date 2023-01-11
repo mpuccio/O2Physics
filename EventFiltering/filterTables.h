@@ -23,7 +23,7 @@ namespace filtering
 {
 DECLARE_SOA_COLUMN(H2, hasH2, bool);   //!
 DECLARE_SOA_COLUMN(H3, hasH3, bool);   //!
-DECLARE_SOA_COLUMN(He, hasHe, bool); //!
+DECLARE_SOA_COLUMN(He, hasHe, bool);   //!
 
 // diffraction
 DECLARE_SOA_COLUMN(TwoPi, has2pi, bool);  //! Double Gap events, DG, 2 pion

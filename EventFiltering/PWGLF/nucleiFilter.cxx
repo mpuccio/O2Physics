@@ -47,8 +47,7 @@ static const std::vector<std::string> cutsNames{
 constexpr double betheBlochDefault[nNuclei][6]{
   {-1.e32, -1.e32, -1.e32, -1.e32, -1.e32, -1.e32},
   {-1.e32, -1.e32, -1.e32, -1.e32, -1.e32, -1.e32},
-  {-1.e32, -1.e32, -1.e32, -1.e32, -1.e32, -1.e32}
-};
+  {-1.e32, -1.e32, -1.e32, -1.e32, -1.e32, -1.e32}};
 static constexpr float cutsPID[nNuclei][nCutsPID]{
   {-3.f, +3.f, -4.f, +4.f, 1.0f},    /*H2*/
   {-3.f, +3.f, -4.f, +4.f, 1.6f},    /*H3*/
@@ -57,8 +56,7 @@ static constexpr float cutsPID[nNuclei][nCutsPID]{
 constexpr double bbMomScalingDefault[nNuclei][2]{
   {1., 1.},
   {1., 1.},
-  {1., 1.}
-};
+  {1., 1.}};
 static const std::vector<std::string> betheBlochParNames{"p0", "p1", "p2", "p3", "p4", "resolution"};
 } // namespace
 
@@ -109,8 +107,7 @@ struct nucleiFilter {
     const double bgScalings[nNuclei][2]{
       {charges[0] * cfgMomentumScalingBetheBloch->get(0u, 0u) / masses[0], charges[0] * cfgMomentumScalingBetheBloch->get(0u, 1u) / masses[0]},
       {charges[1] * cfgMomentumScalingBetheBloch->get(1u, 0u) / masses[1], charges[1] * cfgMomentumScalingBetheBloch->get(1u, 1u) / masses[1]},
-      {charges[2] * cfgMomentumScalingBetheBloch->get(2u, 0u) / masses[2], charges[2] * cfgMomentumScalingBetheBloch->get(2u, 1u) / masses[2]}
-    };
+      {charges[2] * cfgMomentumScalingBetheBloch->get(2u, 0u) / masses[2], charges[2] * cfgMomentumScalingBetheBloch->get(2u, 1u) / masses[2]}};
 
     for (auto& track : tracks) { // start loop over tracks
 
