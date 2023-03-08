@@ -1,7 +1,8 @@
 #include <TFile.h>
 #include <TTree.h>
 
-void cefpOutputChecker(std::string histoFile = "AnalysisResults.root", std::string treeFile = "AO2D.root") {
+void cefpOutputChecker(std::string histoFile = "AnalysisResults.root", std::string treeFile = "AO2D.root")
+{
   TFile referenceFile(histoFile.data());
   TH1* refScalers = (TH1*)referenceFile.Get("central-event-filter-task/scalers/mScalers");
   TH1* refFilters = (TH1*)referenceFile.Get("central-event-filter-task/scalers/mFiltered");
@@ -15,7 +16,8 @@ void cefpOutputChecker(std::string histoFile = "AnalysisResults.root", std::stri
   TFile inputFile(treeFile.data());
   for (auto key : *(inputFile.GetListOfKeys())) {
     TTree* cefpTree = (TTree*)inputFile.Get(Form("%s/O2cefpdecision", key->GetName()));
-    if (!cefpTree) continue;
+    if (!cefpTree)
+      continue;
     ULong64_t fCefpSelected, fCefpTriggered;
     cefpTree->SetBranchAddress("fCefpSelected", &fCefpSelected);
     cefpTree->SetBranchAddress("fCefpTriggered", &fCefpTriggered);
@@ -24,11 +26,15 @@ void cefpOutputChecker(std::string histoFile = "AnalysisResults.root", std::stri
       newFilters->Fill(0);
       newScalers->Fill(0);
       for (ULong64_t j = 0; j < 64; j++) {
-        if (fCefpSelected & (1ull << j)) newFilters->Fill(j + 1);
-        if (fCefpTriggered & (1ull << j)) newScalers->Fill(j + 1);
+        if (fCefpSelected & (1ull << j))
+          newFilters->Fill(j + 1);
+        if (fCefpTriggered & (1ull << j))
+          newScalers->Fill(j + 1);
       }
-      if (fCefpSelected) newFilters->Fill(newFilters->GetNbinsX() - 1);
-      if (fCefpTriggered) newScalers->Fill(newScalers->GetNbinsX() - 1);
+      if (fCefpSelected)
+        newFilters->Fill(newFilters->GetNbinsX() - 1);
+      if (fCefpTriggered)
+        newScalers->Fill(newScalers->GetNbinsX() - 1);
     }
   }
 

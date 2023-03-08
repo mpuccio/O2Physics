@@ -7,35 +7,32 @@
 using o2::InteractionRecord;
 using o2::dataformats::IRFrame;
 
-void checkBCRange(const char *filename = "AO2D.root")
+void checkBCRange(const char* filename = "AO2D.root")
 {
 
   // Open the ROOT file and get the trees
-  TFile *inputFile = new TFile(filename, "READ");
+  TFile* inputFile = new TFile(filename, "READ");
 
   // Loop over the TDirectories in the input file
-  TList *directoryList = inputFile->GetListOfKeys();
-  if (!directoryList)
-  {
+  TList* directoryList = inputFile->GetListOfKeys();
+  if (!directoryList) {
     std::cerr << "Error: input file has no TDirectory keys" << std::endl;
     return;
   }
-  for (int iDir = 0; iDir < directoryList->GetEntries(); ++iDir)
-  {
-    TKey *directoryKey = static_cast<TKey *>(directoryList->At(iDir));
+  for (int iDir = 0; iDir < directoryList->GetEntries(); ++iDir) {
+    TKey* directoryKey = static_cast<TKey*>(directoryList->At(iDir));
 
-    TDirectoryFile *inputDir = dynamic_cast<TDirectoryFile *>(directoryKey->ReadObj());
-    if (!inputDir)
-    {
+    TDirectoryFile* inputDir = dynamic_cast<TDirectoryFile*>(directoryKey->ReadObj());
+    if (!inputDir) {
       continue;
     }
     // std::cout << "Processing directory " << directoryKey->GetName() << std::endl;
     auto dirName = directoryKey->GetName();
-    TTree *treeRanges = dynamic_cast<TTree *>(inputFile->Get(Form("%s/O2bcranges", dirName)));
-    TTree *treeDecision = dynamic_cast<TTree *>(inputFile->Get(Form("%s/O2cefpdecision", dirName)));
+    TTree* treeRanges = dynamic_cast<TTree*>(inputFile->Get(Form("%s/O2bcranges", dirName)));
+    TTree* treeDecision = dynamic_cast<TTree*>(inputFile->Get(Form("%s/O2cefpdecision", dirName)));
 
     // Get the branches we need from the trees
-    ULong64_t bcstart, bcend, globalBCId, cefpSelected=0;
+    ULong64_t bcstart, bcend, globalBCId, cefpSelected = 0;
     treeRanges->SetBranchAddress("fBCstart", &bcstart);
     treeRanges->SetBranchAddress("fBCend", &bcend);
     treeDecision->SetBranchAddress("fGlobalBCId", &globalBCId);
@@ -44,8 +41,7 @@ void checkBCRange(const char *filename = "AO2D.root")
     std::vector<InteractionRecord> bcids;
     // Loop over the entries in the decision tree and check if the BC range is valid
     int nEntriesDecision = treeDecision->GetEntries();
-    for (int iEntryDecision = 0; iEntryDecision < nEntriesDecision; ++iEntryDecision)
-    {
+    for (int iEntryDecision = 0; iEntryDecision < nEntriesDecision; ++iEntryDecision) {
       treeDecision->GetEntry(iEntryDecision);
       if (cefpSelected == 0)
         continue;
@@ -57,25 +53,21 @@ void checkBCRange(const char *filename = "AO2D.root")
 
     // Loop over the entries in the ranges tree and check if the BC range is valid
     int nEntriesRanges = treeRanges->GetEntries();
-    for (int iEntryRanges = 0; iEntryRanges < nEntriesRanges; ++iEntryRanges)
-    {
+    for (int iEntryRanges = 0; iEntryRanges < nEntriesRanges; ++iEntryRanges) {
       treeRanges->GetEntry(iEntryRanges);
       InteractionRecord irstart, irend;
       irstart.setFromLong(bcstart);
       irend.setFromLong(bcend);
       IRFrame frame(irstart, irend);
-      for (int i = 0; i < bcids.size(); i++)
-      {
+      for (int i = 0; i < bcids.size(); i++) {
         auto& bcid = bcids[i];
-        if (!frame.isOutside(bcid))
-        {
+        if (!frame.isOutside(bcid)) {
           found[i] = true;
         }
       }
     }
     int notFound = 0;
-    for (int i = 0; i < bcids.size(); i++)
-    {
+    for (int i = 0; i < bcids.size(); i++) {
       notFound += !found[i];
     }
     std::cout << "Found " << notFound << " BCs not in ranges out of " << bcids.size() << std::endl;
