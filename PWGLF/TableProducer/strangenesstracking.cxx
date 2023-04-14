@@ -23,8 +23,7 @@ using namespace o2::framework;
 using namespace o2::framework::expressions;
 
 struct StrangenessTrackingTask {
-  // using TracksExt = soa::Join<aod::FullTracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::TracksCov, aod::McTrackLabels>;
-  using TracksExt = soa::Join<aod::FullTracks, aod::TracksExtra, aod::TracksDCA, aod::TrackSelection, aod::McTrackLabels>;
+  using TracksExt = soa::Join<aod::TracksIU, aod::TracksCovIU, aod::TracksExtra, aod::McTrackLabels>;
 
   Configurable<double> bz{"bz", 50., "magnetic field"};
 
@@ -37,12 +36,12 @@ struct StrangenessTrackingTask {
     hDCA.setObject(new TH1F("h_dca", "DCA;DCA (cm)", 200, -2., 2.));
   }
 
-  void processTrackedCascades(aod::Collision const& collision, 
+  void processTrackedCascades(aod::Collision const& collision,
     aod::TrackedCascades const &trackedCascades, aod::Cascades const &cascades,
     aod::V0s const &v0s, TracksExt const &tracks, aod::McParticles const &mcParticles)
   {
     for (const auto &trackedCascade : trackedCascades) {
-      auto trackCovTrk = getTrackParCov(trackedCascade);
+      auto trackCovTrk = getTrackParCov(trackedCascade.track_as<TracksExt>());
       auto primaryVertex = getPrimaryVertex(collision);
       auto covMatrixPV = primaryVertex.getCov();
       o2::dataformats::DCA impactParameterTrk;
@@ -56,7 +55,7 @@ struct StrangenessTrackingTask {
       const auto &ptrack = v0.posTrack_as<TracksExt>();
       const auto &ntrack = v0.negTrack_as<TracksExt>();
 
-      if (ptrack.mcParticle().has_mothers() && ntrack.mcParticle().has_mothers() && 
+      if (ptrack.mcParticle().has_mothers() && ntrack.mcParticle().has_mothers() &&
           ptrack.mcParticle().mothersIds()[0] == ntrack.mcParticle().mothersIds()[0]) {
             const auto &v0part = ptrack.mcParticle().mothers_as<aod::McParticles>()[0];
             if (v0part.has_mothers() && bachelor.mcParticle().has_mothers() &&
@@ -67,7 +66,7 @@ struct StrangenessTrackingTask {
   }
   PROCESS_SWITCH(StrangenessTrackingTask, processTrackedCascades, "process tracked cascades", true);
 
-  void processTrackedV0s(aod::Collision const& collision, 
+  void processTrackedV0s(aod::Collision const& collision,
     aod::TrackedV0s const &trackedV0s, aod::V0s const &v0s,
     TracksExt const &tracks, aod::McParticles const &mcParticles)
   {
@@ -79,7 +78,7 @@ struct StrangenessTrackingTask {
   }
   PROCESS_SWITCH(StrangenessTrackingTask, processTrackedV0s, "process tracked V0s", true);
 
-  void processTracked3Bodys(aod::Collision const& collision, 
+  void processTracked3Bodys(aod::Collision const& collision,
     aod::Tracked3Bodys const &tracked3Bodys, aod::Decay3Bodys const &decay3Bodys,
     TracksExt const &tracks, aod::McParticles const &mcParticles)
   {
