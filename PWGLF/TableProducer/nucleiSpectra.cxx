@@ -304,7 +304,7 @@ struct nucleiSpectra {
     o2::base::Propagator::Instance(true)->setMatLUT(nuclei::lut);
   }
 
-  template<typename TC>
+  template <typename TC>
   void fillDataInfo(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& collision, TC const& tracks)
   {
     auto bc = collision.bc_as<aod::BCsWithTimestamps>();
