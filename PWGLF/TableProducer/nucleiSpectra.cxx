@@ -372,7 +372,7 @@ struct nucleiSpectra {
       float beta{responseBeta.GetBeta(track)};
       spectra.fill(HIST("hTpcSignalDataSelected"), track.tpcInnerParam() * track.sign(), track.tpcSignal());
       spectra.fill(HIST("hTofSignalData"), track.tpcInnerParam(), beta);
-      beta = std::min(1.f - 1.e-6f, std::max(1.e-4f, beta));  /// sometimes beta > 1 or < 0, to be chec
+      beta = std::min(1.f - 1.e-6f, std::max(1.e-4f, beta)); /// sometimes beta > 1 or < 0, to be chec
       for (int iS{0}; iS < nuclei::species; ++iS) {
         bool selectedTOF{false};
         if (std::abs(dcaInfo[1]) > cfgDCAcut->get(iS, 1)) {
