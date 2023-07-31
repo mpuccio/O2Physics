@@ -273,13 +273,14 @@ struct centralEventFilterTask {
     }
   }
 
-  void initCCDB(int runNumber) {
+  void initCCDB(int runNumber)
+  {
     if (mRunNumber == runNumber) {
       return;
     }
     mRunNumber = runNumber;
     auto rd = ccdb->getRunDuration(mRunNumber);
-    ccdb->setTimestamp((rd.first + rd.second)/2);
+    ccdb->setTimestamp((rd.first + rd.second) / 2);
     auto* scl = ccdb->get<o2::ctp::CTPRunScalers>("CTP/Calib/Scalers");
     scl->convertRawToO2();
     auto svec = scl->getScalerRecordO2();
@@ -289,7 +290,6 @@ struct centralEventFilterTask {
     uint64_t toleranceInBC = (itsRamp->at(0) + itsRamp->at(1)) * 1.e9 / constants::lhc::LHCBunchSpacingNS;
     mEndOfITSramp += toleranceInBC;
   }
-
 
   void run(ProcessingContext& pc)
   {
