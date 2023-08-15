@@ -871,7 +871,7 @@ struct lfTpcPid {
       if (!collisions.size()) {                                                                                          \
         LOG(warn) << "No collisions in the data frame. Dummy PID table for " << #Particle;                               \
         for (auto const& trk : tracks) {                                                                                 \
-          tablePID##Particle(-999.);                                                                                     \
+          tablePID##Particle(aod::pidtpc_tiny::binning::underflowBin);                                                                                     \
         }                                                                                                                \
         return;                                                                                                          \
       }                                                                                                                  \
