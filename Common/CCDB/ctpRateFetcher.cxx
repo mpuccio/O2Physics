@@ -8,11 +8,13 @@
 #include <DataFormatsParameters/GRPLHCIFData.h>
 #include "CCDB/BasicCCDBManager.h"
 
-namespace o2 {
+namespace o2
+{
 
 using framework::Service;
 
-double ctpRateFetcher::fetch(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, std::string sourceName) {
+double ctpRateFetcher::fetch(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, std::string sourceName)
+{
   if (sourceName.find("ZNC") != std::string::npos) {
     return fetchCTPratesInputs(ccdb, timeStamp, runNumber, 26) / (sourceName.find("hadronic") != std::string::npos ? 28. : 1.);
   } else if (sourceName == "T0CE") {
@@ -30,7 +32,8 @@ double ctpRateFetcher::fetch(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t
   return -1.;
 }
 
-double ctpRateFetcher::fetchCTPratesClasses(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, std::string className) {
+double ctpRateFetcher::fetchCTPratesClasses(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, std::string className)
+{
   getCTPscalers(ccdb, timeStamp, runNumber);
   getCTPconfig(ccdb, timeStamp, runNumber);
 
@@ -52,7 +55,8 @@ double ctpRateFetcher::fetchCTPratesClasses(Service<o2::ccdb::BasicCCDBManager>&
   return rate.second;
 }
 
-double ctpRateFetcher::fetchCTPratesInputs(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, int input) {
+double ctpRateFetcher::fetchCTPratesInputs(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, int input)
+{
   getCTPscalers(ccdb, timeStamp, runNumber);
   getLHCIFdata(ccdb, timeStamp, runNumber);
 
@@ -65,7 +69,8 @@ double ctpRateFetcher::fetchCTPratesInputs(Service<o2::ccdb::BasicCCDBManager>& 
   }
 }
 
-void ctpRateFetcher::getCTPscalers(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber) {
+void ctpRateFetcher::getCTPscalers(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber)
+{
   if (runNumber == mRunNumber && mScalers != nullptr) {
     return;
   }
@@ -78,7 +83,8 @@ void ctpRateFetcher::getCTPscalers(Service<o2::ccdb::BasicCCDBManager>& ccdb, ui
   mScalers->convertRawToO2();
 }
 
-void ctpRateFetcher::getLHCIFdata(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber) {
+void ctpRateFetcher::getLHCIFdata(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber)
+{
   if (runNumber == mRunNumber && mLHCIFdata != nullptr) {
     return;
   }
@@ -89,7 +95,8 @@ void ctpRateFetcher::getLHCIFdata(Service<o2::ccdb::BasicCCDBManager>& ccdb, uin
   }
 }
 
-void ctpRateFetcher::getCTPconfig(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber) {
+void ctpRateFetcher::getCTPconfig(Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber)
+{
   if (runNumber == mRunNumber && mConfig != nullptr) {
     return;
   }
@@ -101,7 +108,8 @@ void ctpRateFetcher::getCTPconfig(Service<o2::ccdb::BasicCCDBManager>& ccdb, uin
   }
 }
 
-double ctpRateFetcher::pileUpCorrection(double triggerRate) {
+double ctpRateFetcher::pileUpCorrection(double triggerRate)
+{
   auto bfilling = mLHCIFdata->getBunchFilling();
   std::vector<int> bcs = bfilling.getFilledBCs();
   double nbc = bcs.size();
@@ -110,4 +118,4 @@ double ctpRateFetcher::pileUpCorrection(double triggerRate) {
   return mu * nbc * constants::lhc::LHCRevFreq;
 }
 
-}  // namespace o2
+} // namespace o2

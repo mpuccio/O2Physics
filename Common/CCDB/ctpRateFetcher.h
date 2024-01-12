@@ -6,18 +6,22 @@
 #include "CCDB/BasicCCDBManager.h"
 #include "Framework/AnalysisHelpers.h"
 
-namespace o2 {
+namespace o2
+{
 
-namespace ctp {
+namespace ctp
+{
 class CTPRunScalers;
 class CTPConfiguration;
-}
+} // namespace ctp
 
-namespace parameters {
+namespace parameters
+{
 class GRPLHCIFData;
 }
 
-class ctpRateFetcher {
+class ctpRateFetcher
+{
  public:
   ctpRateFetcher() = default;
   double fetch(framework::Service<o2::ccdb::BasicCCDBManager>& ccdb, uint64_t timeStamp, int runNumber, std::string sourceName);
@@ -35,6 +39,6 @@ class ctpRateFetcher {
   ctp::CTPRunScalers* mScalers = nullptr;
   parameters::GRPLHCIFData* mLHCIFdata = nullptr;
 };
-}  // namespace o2
+} // namespace o2
 
 #endif
