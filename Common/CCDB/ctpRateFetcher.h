@@ -52,4 +52,4 @@ class ctpRateFetcher
 };
 } // namespace o2
 
-#endif  // COMMON_CCDB_CTPRATEFETCHER_H_
+#endif // COMMON_CCDB_CTPRATEFETCHER_H_
