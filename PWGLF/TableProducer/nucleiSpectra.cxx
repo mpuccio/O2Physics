@@ -238,8 +238,9 @@ struct nucleiSpectra {
   HistogramRegistry spectra{"spectra", {}, OutputObjHandlingPolicy::AnalysisObject, true, true};
   o2::pid::tof::Beta<TrackCandidates::iterator> responseBeta;
 
-  template<class collision_t>
-  bool eventSelection(collision_t & collision) {
+  template <class collision_t>
+  bool eventSelection(collision_t& collision)
+  {
     return collision.sel8() && collision.posZ() > -cfgCutVertex && collision.posZ() < cfgCutVertex;
   }
 
