@@ -10,7 +10,6 @@
 // or submit itself to any jurisdiction.
 //
 
-
 #include <cmath>
 
 #include "Math/Vector4D.h"
