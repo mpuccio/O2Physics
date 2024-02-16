@@ -123,8 +123,8 @@ struct zdcSP {
     float znaCommon = zdc.energyCommonZNA() < 0 ? kVeryNegative : zdc.energyCommonZNA();
     float zncCommon = zdc.energyCommonZNC() < 0 ? kVeryNegative : zdc.energyCommonZNC();
     zdcSPTable(bc.globalBC(), collision.posX(), collision.posY(), collision.posZ(), collision.centFT0C(),
-              znaCommon, znaEnergy[0], znaEnergy[1], znaEnergy[2], znaEnergy[3],
-              zncCommon, zncEnergy[0], zncEnergy[1], zncEnergy[2], zncEnergy[3]);
+               znaCommon, znaEnergy[0], znaEnergy[1], znaEnergy[2], znaEnergy[3],
+               zncCommon, zncEnergy[0], zncEnergy[1], zncEnergy[2], zncEnergy[3]);
   }
   PROCESS_SWITCH(zdcSP, processData, "Data analysis", true);
 };
