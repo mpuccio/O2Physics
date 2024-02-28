@@ -12,7 +12,6 @@
 // Minimal example to run this task:
 // o2-analysis-centrality-table -b --configuration json://configuration.json | o2-analysis-timestamp -b --configuration json://configuration.json | o2-analysis-event-selection -b --configuration json://configuration.json | o2-analysis-multiplicity-table -b --configuration json://configuration.json | o2-analysis-lf-zdcsp -b --configuration json://configuration.json --aod-file @input_data.txt --aod-writer-json OutputDirector.json
 
-
 #include <cmath>
 
 #include "Math/Vector4D.h"
@@ -58,12 +57,13 @@ constexpr double kVeryNegative = -1.e12;
 
 using BCsRun3 = soa::Join<aod::BCsWithTimestamps, aod::Run3MatchedToBCSparse>;
 
-namespace {
-  std::unordered_map<int, TH2*> gHistosC[5];
-  std::unordered_map<int, TH2*> gHistosA[5];
-  TH2* gCurrentHistC[5];
-  TH2* gCurrentHistA[5];
-}
+namespace
+{
+std::unordered_map<int, TH2*> gHistosC[5];
+std::unordered_map<int, TH2*> gHistosA[5];
+TH2* gCurrentHistC[5];
+TH2* gCurrentHistA[5];
+} // namespace
 
 struct zdcSP {
 
@@ -126,7 +126,7 @@ struct zdcSP {
     if (!bc.has_zdc()) {
       return;
     }
-    double hadronicRate = mRateFetcher.fetch(ccdb.service, bc.timestamp(), mRunNumber, "ZDC hadronic");//
+    double hadronicRate = mRateFetcher.fetch(ccdb.service, bc.timestamp(), mRunNumber, "ZDC hadronic"); //
     auto zdc = bc.zdc();
     auto zncEnergy = zdc.energySectorZNC();
     auto znaEnergy = zdc.energySectorZNA();
