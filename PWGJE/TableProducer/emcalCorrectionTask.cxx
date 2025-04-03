@@ -288,7 +288,7 @@ struct EmcalCorrectionTask {
       std::vector<int64_t> cellIndicesBC;
       for (const auto& cell : cellsInBC) {
         auto amplitude = cell.amplitude();
-        if (static_cast<bool>(hasShaperCorrection) && emcal::intToChannelType(cell.cellType()) == emcal::ChannelType_t::LOW_GAIN) { // Apply shaper correction to LG cells
+        if (static_cast<bool>(hasShaperCorrection)) {
           amplitude = o2::emcal::NonlinearityHandler::evaluateShaperCorrectionCellEnergy(amplitude);
         }
         if (applyCellAbsScale) {
@@ -419,7 +419,7 @@ struct EmcalCorrectionTask {
           mHistManager.fill(HIST("hMCParticleEnergy"), cellparticle.e());
         }
         auto amplitude = cell.amplitude();
-        if (static_cast<bool>(hasShaperCorrection) && emcal::intToChannelType(cell.cellType()) == emcal::ChannelType_t::LOW_GAIN) { // Apply shaper correction to LG cells
+        if (static_cast<bool>(hasShaperCorrection)) {
           amplitude = o2::emcal::NonlinearityHandler::evaluateShaperCorrectionCellEnergy(amplitude);
         }
         cellsBC.emplace_back(cell.cellNumber(),
