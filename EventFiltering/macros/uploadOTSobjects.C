@@ -26,14 +26,14 @@
 #include "TTree.h"
 
 #include "CCDB/BasicCCDBManager.h"
-#include "EventFiltering/ZorroHelper.h"
+#include "Common/Core/ZorroHelper.h"
 #include "CommonConstants/LHCConstants.h"
 
 constexpr uint32_t chunkSize = 1000000;
 
 void uploadOTSobjects(std::string inputList, std::string passName, bool useAlien, bool chunkedProcessing = true)
 {
-  const std::string kBaseCCDBPath = "EventFiltering/Zorro/";
+  const std::string kBaseCCDBPath = "Common/Core/Zorro/";
   std::string baseCCDBpath = passName.empty() ? kBaseCCDBPath : kBaseCCDBPath + passName + "/";
   if (useAlien) {
     TGrid::Connect("alien://");
